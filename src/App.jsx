@@ -5,30 +5,28 @@ import axios from "axios";
 import { password } from "./assets/secrets";
 import { userName } from "./assets/secrets";
 import { URL } from "./assets/secrets";
+import "react-js-cron/dist/styles.css";
 
 const App = () => {
   const [advertisements, setAdvertisements] = useState([]);
 
-  
   useEffect(() => {
     fetchAllAdvertisements();
+    setInterval(fetchAllAdvertisements, 10000); // fetching every 10 second
   }, []);
 
   const fetchAllAdvertisements = async () => {
     await axios
-      .get(
-        URL,
-        {
-          auth: {
-            password: password,
-            username: userName,
-          },
-        }
-      )
+      .get(URL, {
+        auth: {
+          password: password,
+          username: userName,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
           setAdvertisements(response.data);
-          console.log(response.data)
+          console.log("data fetched");
         } else {
           console.log("mmmm");
         }
